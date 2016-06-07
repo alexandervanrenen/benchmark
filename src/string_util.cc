@@ -107,7 +107,10 @@ std::string ToBinaryStringFullySpecified(double value, double threshold,
 void AppendHumanReadable(int n, std::string* str) {
   std::stringstream ss;
   // Round down to the nearest SI prefix.
-  ss << "/" << ToBinaryStringFullySpecified(n, 1.0, 0);
+  if((n & (n - 1)) == 0)
+    ss << "/" << ToBinaryStringFullySpecified(n, 1.0, 0);
+  else
+    ss << "/" << n;
   *str += ss.str();
 }
 
