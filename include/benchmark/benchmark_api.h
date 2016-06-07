@@ -494,6 +494,11 @@ public:
   // REQUIRES: The function passed to the constructor must accept an arg1.
   Benchmark* DenseRange(int start, int limit);
 
+  // Run this benchmark once for every inc-th value in the range [start..limit]
+  // Or, more precise: { x | start<=x<=limit & x=start+i*inc with i in NAT+} U {limit}
+  // REQUIRES: The function passed to the constructor must accept an arg1.
+  Benchmark* UniformRange(int start, int limit, int inc);
+
   // Run this benchmark once with "x,y" as the extra arguments passed
   // to the function.
   // REQUIRES: The function passed to the constructor must accept arg1,arg2.

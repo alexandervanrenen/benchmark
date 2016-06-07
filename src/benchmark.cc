@@ -355,6 +355,7 @@ public:
   void Unit(TimeUnit unit);
   void Range(int start, int limit);
   void DenseRange(int start, int limit);
+  void UniformRange(int start, int limit, int inc);
   void ArgPair(int start, int limit);
   void RangePair(int lo1, int hi1, int lo2, int hi2);
   void RangeMultiplier(int multiplier);
@@ -528,6 +529,17 @@ void BenchmarkImp::DenseRange(int start, int limit) {
   }
 }
 
+void BenchmarkImp::UniformRange(int start, int limit, int inc) {
+  CHECK(arg_count_ == -1 || arg_count_ == 1);
+  arg_count_ = 1;
+  CHECK_GE(start, 0);
+  CHECK_LE(start, limit);
+  for (int arg = start; arg < limit; arg+=inc) {
+    args_.emplace_back(arg, -1);
+  }
+  args_.emplace_back(limit, -1);
+}
+
 void BenchmarkImp::ArgPair(int x, int y) {
   CHECK(arg_count_ == -1 || arg_count_ == 2);
   arg_count_ = 2;
@@ -656,6 +668,11 @@ Benchmark* Benchmark::Range(int start, int limit) {
 
 Benchmark* Benchmark::DenseRange(int start, int limit) {
   imp_->DenseRange(start, limit);
+  return this;
+}
+
+Benchmark* Benchmark::UniformRange(int start, int limit, int inc) {
+  imp_->UniformRange(start, limit, inc);
   return this;
 }
 
